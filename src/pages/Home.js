@@ -3,6 +3,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/icon.png';
 import MapPage from './MapPage';
 import { Nav } from 'react-bootstrap';
+import background from '../assets/background.jpg';  // Import your new background image
+
 export function Navbar() {
   const navigate = useNavigate();
 
@@ -10,7 +12,7 @@ export function Navbar() {
     <nav className="navbar">
       <div className="logo">
         <NavLink to="/">
-        <img src={logo} alt="Durjog" className="logo-img" />
+          <img src={logo} alt="Durjog" className="logo-img" />
         </NavLink>
       </div>
       <ul className="nav-links">
@@ -74,7 +76,8 @@ export function Home() {
         </div>
       </div>
       <div className="hero-image">
-        <img src="https://i.imgur.com/2nCt3Sb.png" alt="Flood rescue" />
+        {/* Changed image src from external URL to your local image */}
+        <img src={background} alt="Background" />
       </div>
     </div>
   );
