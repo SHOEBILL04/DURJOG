@@ -1,16 +1,10 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: white;
-  color: black;
-}
-
+/* Navbar container stays white with subtle shadow */
 .navbar {
   display: flex;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background: white !important;  /* force white background */
-  color: black !important;       /* force black text */
+  background: white !important;
+  color: black !important;
   box-shadow: 0 0 5px #ccc;
 }
 
@@ -25,43 +19,49 @@ body {
   gap: 1rem;
   list-style: none;
   align-items: center;
-  margin: 0;  /* reset ul default margin */
-  padding: 0; /* reset ul default padding */
+  margin: 0;
+  padding: 0;
 }
 
-.btn {
-  padding: 8px 16px;
-  border: 2px solid #007bff;
-  background: transparent;
-  color: #007bff;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.btn.primary {
-  background: #007bff;
-  color: white;
-}
-
-.hero {
-  display: flex;
-  padding: 2rem;
+/* Base style for ALL nav items - links and buttons */
+.nav-item {
+  display: inline-flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
+  padding: 8px 16px;
+  min-width: 100px;           /* same width */
+  background-color: #e0f0ff;  /* very light blue background */
+  color: #007bff !important;  /* blue text */
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  box-sizing: border-box;
 }
 
-.hero-text {
-  max-width: 50%;
+/* Hover: deepen background and text color */
+.nav-item:hover {
+  background-color: #a3cdfd; /* medium light blue */
+  color: #004ea1 !important; /* darker blue */
 }
 
-.hero-text h1 span {
-  color: #007bff;
+/* Active or currently selected nav item style */
+.nav-item.active,
+.nav-item[aria-current="page"] {
+  background-color: #007bff; /* strong blue */
+  color: white !important;
 }
 
-.hero-image img {
-  width: 400px;
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* Primary style for Register button */
+.nav-item.primary {
+  background-color: #007bff; /* strong blue */
+  color: white !important;
+}
+
+.nav-item.primary:hover {
+  background-color: #0056b3; /* darker blue */
 }
