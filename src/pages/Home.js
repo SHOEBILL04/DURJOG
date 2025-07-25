@@ -2,13 +2,16 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/icon.png';
 import MapPage from './MapPage';
+import { Nav } from 'react-bootstrap';
 export function Navbar() {
   const navigate = useNavigate();
 
   return (
     <nav className="navbar">
       <div className="logo">
+        <NavLink to="/">
         <img src={logo} alt="Durjog" className="logo-img" />
+        </NavLink>
       </div>
       <ul className="nav-links">
         <li>
