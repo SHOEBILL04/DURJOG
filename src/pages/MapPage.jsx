@@ -1,49 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Map from '../Components/Map/Map';
-import './MapPage.css';
+import React from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-const MapPage = () => {
-  const [mapData, setMapData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// Fix missing marker icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-icon.png',
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-icon-2x.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.6/dist/images/marker-shadow.png',
+});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/map-data');
-        setMapData(response.data);
-      } catch (err) {
-        setError(err.message || "Failed to load map data");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (loading) return (
-    <div className="loading-container">
-      <div className="spinner"></div>
-      <p>Loading map...</p>
-    </div>
-  );
-
-  if (error) return (
-    <div className="error-container">
-      <h3>Error</h3>
-      <p>{error}</p>
-      <button onClick={() => window.location.reload()}>Retry</button>
-    </div>
-  );
-
+export default function MapPage() {
   return (
-    <div className="map-page-container">
-      <div className="map-wrapper">
-        <Map data={mapData} />
-      </div>
+    <div style={{ height: '90vh', width: '100%' }}>
+      <MapContainer center={[23.8103, 90.4125]} zoom={10} style={{ height: '100%', width: '100%' }}>
+        <TileLayer
+          attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={[23.8103, 90.4125]}>
+          <Popup>Dhaka, Bangladesh</Popup>
+        </Marker>
+      </MapContainer>
     </div>
   );
-};
-
-export default MapPage;
+}

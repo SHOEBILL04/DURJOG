@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import logo from '../assets/icon.png';  // adjust path based on your folder structure
-
+import logo from '../assets/icon.png';
+import MapPage from './MapPage';
 export function Navbar() {
   const navigate = useNavigate();
 
@@ -56,14 +56,18 @@ export function Home() {
           Together, We’re Stronger <br />
           <span>Durjog</span>
         </h1>
-        <p classname="text1">
+        <p className="text1">
           Durjog is built on the power of community and collaboration. In times of need,
           our platform allows you to quickly report emergencies, receive critical updates,
           and access lifesaving information.
         </p>
         <div className="buttons">
-          <button className="btn primary" onClick={() => navigate('/updates')}>Latest Updates</button>
-          <button className="btn" onClick={() => navigate('/map')}>Disaster Map</button>
+          <button className="btn primary" onClick={() => navigate('/updates')}>
+            Latest Updates
+          </button>
+          <button className="btn" onClick={() => navigate('/map')}>
+            Disaster Map
+          </button>
         </div>
       </div>
       <div className="hero-image">
@@ -86,7 +90,7 @@ export function Updates() {
 }
 
 export function Map() {
-  return <h2 style={{ padding: '2rem' }}>Disaster Map</h2>;
+  return <MapPage />; // ✅ Now properly returns your Leaflet component
 }
 
 export function Contact() {
