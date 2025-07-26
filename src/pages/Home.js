@@ -96,7 +96,7 @@ export function Updates() {
 }
 
 export function Map() {
-  return <MapPage />; // ✅ Now properly returns your Leaflet component
+  return <MapPage />; // 
 }
 
 export function Contact() {
