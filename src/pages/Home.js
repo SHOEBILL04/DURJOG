@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/icon.png';
 import MapPage from './MapPage';
+import { ContactPage } from './ContactPage';
 import { Nav } from 'react-bootstrap';
 import background from '../assets/background.jpg';  // Import your new background image
 
@@ -100,5 +101,5 @@ export function Map() {
 }
 
 export function Contact() {
-  return <h2 style={{ padding: '2rem' }}>Contact Page</h2>;
+  return <ContactPage/>;
 }
