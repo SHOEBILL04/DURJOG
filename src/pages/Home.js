@@ -4,7 +4,10 @@ import logo from '../assets/icon.png';
 import MapPage from './MapPage';
 import { ContactPage } from './ContactPage';
 import { Nav } from 'react-bootstrap';
-import background from '../assets/background.jpg';  // Import your new background image
+import background from '../assets/background.jpg'; 
+ // Import your new background image
+ //import './Home.css';
+
 
 export function Navbar() {
   const navigate = useNavigate();
