@@ -1,6 +1,6 @@
 import {ContactCard} from "../Components/ContctCard/ContactCard";
 import ContactForm from '../Components/ContactForm/ContactForm';
-
+import './ContactPage.css';
 
 export const ContactPage = () => {
   const contactDetails = [
