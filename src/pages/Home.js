@@ -1,14 +1,10 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/icon.png';
+import background from '../assets/background.png';
 import MapPage from './MapPage';
-import { ContactPage } from './ContactPage';
-import { Nav } from 'react-bootstrap';
-import background from '../assets/background.jpg'; 
- // Import your new background image
- //import './Home.css';
-
-
+// import './Home.css'; 
+// NAVBAR 
 export function Navbar() {
   const navigate = useNavigate();
 
@@ -55,6 +51,7 @@ export function Navbar() {
   );
 }
 
+// HOME PAGE 
 export function Home() {
   const navigate = useNavigate();
 
@@ -79,13 +76,15 @@ export function Home() {
           </button>
         </div>
       </div>
+
+      {}
       <div className="hero-image">
-        {/* Changed image src from external URL to your local image */}
-        <img src={background} alt="Background" />
+        <img src={background} alt="Durjog disaster illustration" />
       </div>
     </div>
   );
 }
+
 
 export function SignIn() {
   return <h2 style={{ padding: '2rem' }}>Sign In Page</h2>;
@@ -100,9 +99,9 @@ export function Updates() {
 }
 
 export function Map() {
-  return <MapPage />; // 
+  return <MapPage />;
 }
 
 export function Contact() {
-  return <ContactPage/>;
+  return <h2 style={{ padding: '2rem' }}>Contact Page</h2>;
 }
