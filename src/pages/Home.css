@@ -14,7 +14,7 @@
   flex-direction: column;
   justify-content: center;
   text-align: left;
-  padding-left: 4rem; 
+  padding-left: 4rem; /* Shifts text right */
 }
 
 .hero-text h1 {
@@ -55,7 +55,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 2rem;
+  padding-top: 2rem; /* Pushes image down */
 }
 
 .hero-image img {
@@ -114,4 +114,64 @@
   background-color: #bdefff;
   color: black;
   font-weight: 700;
+}
+
+/* Mobile Er Jonno */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .hero-text {
+    padding-left: 0;
+    max-width: 100%;
+    align-items: center;
+  }
+
+  .hero-text h1 {
+    font-size: 2.2rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buttons .btn {
+    width: 80%;
+  }
+
+  .hero-image {
+    padding-top: 1rem;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+
+  .nav-links a,
+  .nav-links button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
 }
