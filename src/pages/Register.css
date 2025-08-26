@@ -1,0 +1,193 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 50px);
+  background-color: #fff;
+  padding: 2rem;
+}
+
+.register-form {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 3rem;
+  background-color: #ffffff;
+  border-radius: 10px; 
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); 
+}
+
+.register-logo {
+  height: 150px; 
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 2.5rem; 
+}
+
+.register-form h1 {
+  font-size: 3.2rem; 
+  margin-bottom: 1.5rem;
+  color: black;
+  text-align: center;
+}
+
+.register-form h1 span {
+  color: #0f612a;
+}
+
+.register-form p {
+  font-size: 1.3rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem; 
+  color: black;
+  text-align: center;
+}
+
+.register-form .error {
+  color: #dc3545;
+  font-size: 1.2rem; 
+  margin-bottom: 1.5rem; 
+  text-align: center;
+}
+
+.register-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; 
+  width: 100%;
+  max-width: 500px; 
+}
+
+.register-form label {
+  font-size: 1.1rem; 
+  font-weight: 500;
+  color: black;
+  text-align: left;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 1rem; 
+  border: 2px solid #ccc; 
+  border-radius: 8px; 
+  font-size: 1.1rem;
+  color: black;
+}
+
+.register-form input:focus {
+  outline: none;
+  border-color: #0f612a;
+  box-shadow: 0 0 8px rgba(15, 97, 42, 0.4); 
+}
+
+.register-form input::placeholder {
+  color: #666;
+}
+
+.register-form .btn {
+  font-size: 1.2rem; 
+  padding: 1rem 2rem; 
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.1s ease;
+}
+
+.register-form .btn.primary {
+  background-color: #0f612a;
+  color: #fff;
+}
+
+.register-form .btn:hover {
+  background-color: #add8e6;
+  color: black;
+  transform: translateY(-2px); 
+}
+
+.register-form .btn:active {
+  transform: translateY(0);
+}
+
+.register-form .link {
+  font-size: 1.1rem; 
+  color: #0f612a;
+  text-decoration: none;
+  margin-top: 2rem;
+}
+
+.register-form .link:hover {
+  text-decoration: underline;
+  color: #add8e6;
+}
+
+
+@media (max-width: 768px) {
+  .register-container {
+    padding: 1rem;
+  }
+
+  .register-form {
+    padding: 2rem 1rem;
+    max-width: 90%;
+  }
+
+  .register-logo {
+    height: 120px;
+  }
+
+  .register-form h1 {
+    font-size: 2.2rem;
+  }
+
+  .register-form p {
+    font-size: 1.1rem;
+  }
+
+  .register-form .error {
+    font-size: 1rem;
+  }
+
+  .register-form label {
+    font-size: 1rem;
+  }
+
+  .register-form input {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .register-form .btn {
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
+  }
+
+  .register-form .link {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .register-logo {
+    height: 100px;
+  }
+
+  .register-form h1 {
+    font-size: 1.8rem;
+  }
+
+  .register-form p {
+    font-size: 1rem;
+  }
+}

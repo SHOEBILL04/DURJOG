@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import logo from '../assets/icon.png';
 import MapPage from './MapPage';
 import { ContactPage } from './ContactPage';
-import { Nav } from 'react-bootstrap';
-import background from '../assets/background.jpg'; 
- // Import your new background image
- //import './Home.css';
-
+import background from '../assets/background.jpg';
+import './Home.css';
 
 export function Navbar() {
   const navigate = useNavigate();
+  const { isLoggedIn, username, logout } = useAuth();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setShowDropdown(false);
+    navigate('/signin');
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   return (
     <nav className="navbar">
@@ -40,21 +64,39 @@ export function Navbar() {
             Contact
           </NavLink>
         </li>
-        <li>
-          <button className="nav-item" onClick={() => navigate('/signin')}>
-            Sign In
-          </button>
-        </li>
-        <li>
-          <button className="nav-item primary" onClick={() => navigate('/register')}>
-            Register
-          </button>
-        </li>
+        {isLoggedIn ? (
+          <li className="profile-dropdown" ref={dropdownRef}>
+            <button className="nav-item profile-btn" onClick={toggleDropdown}>
+              {username} ▼
+            </button>
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleLogout} className="dropdown-item">
+                  Logout
+                </button>
+              </div>
+            )}
+          </li>
+        ) : (
+          <>
+            <li>
+              <NavLink to="/signin" className="nav-item">
+                Sign In
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/register" className="nav-item register-btn">
+                Register
+              </NavLink>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
 }
 
+// Rest of your components (Home, Updates, Map, Contact) remain the same...
 export function Home() {
   const navigate = useNavigate();
 
@@ -62,7 +104,7 @@ export function Home() {
     <div className="hero">
       <div className="hero-text">
         <h1>
-          Together, We’re Stronger <br />
+          Together, We're Stronger <br />
           <span>Durjog</span>
         </h1>
         <p className="text1">
@@ -80,19 +122,10 @@ export function Home() {
         </div>
       </div>
       <div className="hero-image">
-        {/* Changed image src from external URL to your local image */}
         <img src={background} alt="Background" />
       </div>
     </div>
   );
-}
-
-export function SignIn() {
-  return <h2 style={{ padding: '2rem' }}>Sign In Page</h2>;
-}
-
-export function Register() {
-  return <h2 style={{ padding: '2rem' }}>Register Page</h2>;
 }
 
 export function Updates() {
@@ -100,9 +133,9 @@ export function Updates() {
 }
 
 export function Map() {
-  return <MapPage />; // 
+  return <MapPage />;
 }
 
 export function Contact() {
-  return <ContactPage/>;
+  return <ContactPage />;
 }

@@ -11,6 +11,7 @@
     "bootstrap": "^5.3.7",
     "dompurify": "^3.2.6",
     "leaflet": "^1.9.4",
+    "mongodb": "^6.18.0",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
