@@ -1,5 +1,6 @@
 import { useState } from 'react';  
 import './ContactForm.css';
+import axios from "axios";
 
 export default function Contact() {
   const [result, setResult] = useState(null);  
@@ -9,27 +10,24 @@ export default function Contact() {
     setResult("Sending...");
     const formData = new FormData(event.target);
 
-    formData.append("access_key", "82db7e58-4468-4277-9723-e35311bf0bf2");
-
-    const response = await fetch("http://localhost:3000/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.get("name"),
-        email: formData.get("email"),
-        message: formData.get("message"),
-      }),
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      setResult("Form Submitted Successfully");
-      event.target.reset();
-    } else {
-      console.log("Error", data);
-      setResult(data.message);
+    try {
+      const {data} = await axios.post("http://localhost:5000/api/contact", {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          message: formData.get("message"),
+      });
+      if (data.success) {
+        setResult("Form Submitted Successfully");
+        event.target.reset();
+      } else {
+        console.log("Error", data);
+        setResult(data.message);
+      }
+    } catch (error) {
+      console.error("Request failed:", error);
+      setResult("Server error, please try again later.");
     }
+    
   };
   console.log(result)
 
