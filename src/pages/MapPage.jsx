@@ -3,7 +3,6 @@ import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Fix for default marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -11,44 +10,58 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// Expanded user locations across Dhaka's major areas
 const userLocations = [
   // Gulshan (High concentration)
   { lat: 23.7925, lng: 90.4155 }, { lat: 23.7923, lng: 90.4158 },
   { lat: 23.7927, lng: 90.4152 }, { lat: 23.7920, lng: 90.4160 },
   { lat: 23.7928, lng: 90.4150 }, { lat: 23.7918, lng: 90.4145 },
   
-  // Banani (Medium concentration)
-  { lat: 23.7930, lng: 90.4055 }, { lat: 23.7928, lng: 90.4060 },
-  { lat: 23.7932, lng: 90.4058 }, { lat: 23.7935, lng: 90.4045 },
+  //  AUST(Medium concentration)
+  { lat: 23.76341, lng: 90.40655 }, { lat: 23.76416, lng: 90.40657 },
+  { lat: 23.76371, lng: 90.40672 }, { lat: 23.76385, lng: 90.40668 },
   
-  // Dhanmondi (High concentration)
-  { lat: 23.7455, lng: 90.3750 }, { lat: 23.7460, lng: 90.3745 },
-  { lat: 23.7450, lng: 90.3755 }, { lat: 23.7445, lng: 90.3760 },
-  { lat: 23.7465, lng: 90.3735 }, { lat: 23.7470, lng: 90.3720 },
+  // Kushtia (High concentration)
+  { lat: 23.9025, lng: 89.1200 },
+  { lat: 23.9030, lng: 89.1195 },
+  { lat: 23.9020, lng: 89.1205 },
+  { lat: 23.9015, lng: 89.1210 },
+  { lat: 23.9035, lng: 89.1185 },
+  { lat: 23.9040, lng: 89.1170 },
+
   
-  // Uttara (Medium concentration)
-  { lat: 23.8675, lng: 90.3990 }, { lat: 23.8680, lng: 90.3985 },
-  { lat: 23.8670, lng: 90.3995 }, { lat: 23.8665, lng: 90.4000 },
+// Panchagarh (Medium concentration)
+{ lat: 26.3400, lng: 88.5800 },
+{ lat: 26.3405, lng: 88.5795 },
+{ lat: 26.3395, lng: 88.5805 },
+{ lat: 26.3390, lng: 88.5810 },
+
   
-  // Mirpur (High concentration)
-  { lat: 23.8050, lng: 90.3650 }, { lat: 23.8045, lng: 90.3645 },
-  { lat: 23.8055, lng: 90.3655 }, { lat: 23.8060, lng: 90.3660 },
-  { lat: 23.8035, lng: 90.3635 },
+  // Chittagong (High concentration)
+  { lat: 22.3569, lng: 91.7832 },
+  { lat: 22.3575, lng: 91.7825 }, 
+  { lat: 22.3555, lng: 91.7840 },
+  { lat: 22.3540, lng: 91.7850 },
+  { lat: 22.3585, lng: 91.7810 },
   
-  // Motijheel (Medium concentration)
-  { lat: 23.7330, lng: 90.4180 }, { lat: 23.7325, lng: 90.4175 },
-  { lat: 23.7335, lng: 90.4185 },
-  
+  // Bogura (Medium concentration)
+  { lat: 24.8500, lng: 89.3750 },
+  { lat: 24.8495, lng: 89.3745 },
+  { lat: 24.8505, lng: 89.3755 },
+  { lat: 24.8500, lng: 89.3750 },
+  { lat: 24.8495, lng: 89.3745 },
+  { lat: 24.8505, lng: 89.3755 },
+
   // Mohammadpur (Low concentration)
   { lat: 23.7630, lng: 90.3580 }, { lat: 23.7625, lng: 90.3575 },
   
-  // Old Dhaka (Low concentration)
-  { lat: 23.7100, lng: 90.4070 }, { lat: 23.7110, lng: 90.4080 },
+  // Sylhet (Low concentration)
+  { lat: 24.84434, lng: 91.90001 }, { lat: 24.84315, lng: 91.91461 },
   
-  // Bashundhara (Medium concentration)
-  { lat: 23.8150, lng: 90.4250 }, { lat: 23.8145, lng: 90.4245 },
-  { lat: 23.8155, lng: 90.4255 },
+  // Kishoreganj (Medium concentration)
+  { lat: 24.4350, lng: 90.7850 },
+  { lat: 24.4345, lng: 90.7845 },
+  { lat: 24.4355, lng: 90.7855 },
+
 ];
 
 function clusterLocations(locations, precision = 3) {
@@ -73,7 +86,7 @@ function clusterLocations(locations, precision = 3) {
   return Object.values(clusters);
 }
 
-export default function DhakaHeatmap() {
+export default function Heatmap() {
   const clusters = clusterLocations(userLocations, 3);
 
   const radiusScale = (count) => 10 + Math.sqrt(count) * 6;
@@ -89,8 +102,8 @@ export default function DhakaHeatmap() {
       backgroundColor: '#f0f0f0'
     }}>
       <MapContainer
-        center={[23.8103, 90.4125]} // Centered on Dhaka
-        zoom={12} // Slightly zoomed out to see more areas
+        center={[23.8103, 90.4125]}
+        zoom={12}
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
@@ -106,7 +119,7 @@ export default function DhakaHeatmap() {
             pathOptions={{
               fillColor: colorScale(count),
               fillOpacity: 0.9,
-              color: 'transparent', // No border
+              color: 'transparent',
               weight: 0
             }}
           >

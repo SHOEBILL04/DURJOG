@@ -88,6 +88,7 @@
   gap: 0.5rem;
   margin: 0;
   padding: 0;
+  align-items: center;
 }
 
 .nav-links a,
@@ -116,6 +117,7 @@
   font-weight: 700;
 }
 
+partha-dev
 /* Mobile Er Jonno */
 @media (max-width: 768px) {
   .hero {
@@ -175,3 +177,54 @@
     font-size: 1.2rem;
   }
 }
+
+/* Profile dropdown styles */
+.profile-dropdown {
+  position: relative;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 150px;
+  margin-top: 0.5rem;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: black;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #add8e6;
+}
+
+.register-btn {
+  background-color: #0f612a;
+  color: white;
+}
+
+.register-btn:hover {
+  background-color: #0d4f23;
+  color: white;
+}
+ main

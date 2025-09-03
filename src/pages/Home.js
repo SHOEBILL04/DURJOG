@@ -1,14 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import logo from '../assets/icon.png';
-import background from '../assets/background.png';
 import MapPage from './MapPage';
+partha-dev
 import {ContactPage} from './ContactPage';
 import './Home.css'; 
 
 
+import { ContactPage } from './ContactPage';
+import background from '../assets/background.jpg';
+import './Home.css';
+ main
+
 export function Navbar() {
   const navigate = useNavigate();
+  const { isLoggedIn, username, logout } = useAuth();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setShowDropdown(false);
+    navigate('/signin');
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   return (
     <nav className="navbar">
@@ -38,22 +70,42 @@ export function Navbar() {
             Contact
           </NavLink>
         </li>
-        <li>
-          <button className="nav-item" onClick={() => navigate('/signin')}>
-            Sign In
-          </button>
-        </li>
-        <li>
-          <button className="nav-item primary" onClick={() => navigate('/register')}>
-            Register
-          </button>
-        </li>
+        {isLoggedIn ? (
+          <li className="profile-dropdown" ref={dropdownRef}>
+            <button className="nav-item profile-btn" onClick={toggleDropdown}>
+              {username} ▼
+            </button>
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <button onClick={handleLogout} className="dropdown-item">
+                  Logout
+                </button>
+              </div>
+            )}
+          </li>
+        ) : (
+          <>
+            <li>
+              <NavLink to="/signin" className="nav-item">
+                Sign In
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/register" className="nav-item register-btn">
+                Register
+              </NavLink>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   );
 }
 
+ partha-dev
 
+
+ main
 export function Home() {
   const navigate = useNavigate();
 
@@ -61,7 +113,7 @@ export function Home() {
     <div className="hero">
       <div className="hero-text">
         <h1>
-          Together, We’re Stronger <br />
+          Together, We're Stronger <br />
           <span>Durjog</span>
         </h1>
         <p className="text1">
@@ -78,15 +130,20 @@ export function Home() {
           </button>
         </div>
       </div>
+ partha-dev
 
+ main
       <div className="hero-image">
-        <img src={background} alt="Durjog disaster illustration" />
+        <img src={background} alt="Background" />
       </div>
     </div>
   );
 }
 
+ partha-dev
 
+=======
+main
 export function Updates() {
   return <h2 style={{ padding: '2rem' }}>Latest Updates</h2>;
 }
@@ -96,7 +153,10 @@ export function Map() {
 }
 
 export function Contact() {
+ partha-dev
   return <ContactPage/>;
 }
-//export { Navbar, Home, Updates, Map, Contact };
 
+  return <ContactPage />;
+}
+ main
