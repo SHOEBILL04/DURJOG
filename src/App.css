@@ -1,0 +1,68 @@
+/* Navbar container stays white with subtle shadow */
+@import 'leaflet/dist/leaflet.css';
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: white !important;
+  color: black !important;
+  box-shadow: 0 0 5px #ccc;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base style for ALL nav items - links and buttons */
+.nav-item {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  min-width: 100px;           /* same width */
+  background-color: #e0f0ff;  /* very light blue background */
+  color: #007bff !important;  /* blue text */
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+/* Hover: deepen background and text color */
+.nav-item:hover {
+  background-color: #a3cdfd; /* medium light blue */
+  color: #004ea1 !important; /* darker blue */
+}
+
+/* Active or currently selected nav item style */
+.nav-item.active,
+.nav-item[aria-current="page"] {
+  background-color: #007bff; /* strong blue */
+  color: white !important;
+}
+
+/* Primary style for Register button */
+.nav-item.primary {
+  background-color: #007bff; /* strong blue */
+  color: white !important;
+}
+
+.nav-item.primary:hover {
+  background-color: #0056b3; /* darker blue */
+}
