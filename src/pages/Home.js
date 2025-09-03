@@ -6,7 +6,7 @@ import MapPage from './MapPage';
 import {ContactPage} from './ContactPage';
 import './Home.css'; 
 
-// NAVBAR
+
 export function Navbar() {
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ export function Navbar() {
   );
 }
 
-// HOME PAGE
+
 export function Home() {
   const navigate = useNavigate();
 
@@ -86,14 +86,6 @@ export function Home() {
   );
 }
 
-// Other pages
-export function SignIn() {
-  return <h2 style={{ padding: '2rem' }}>Sign In Page</h2>;
-}
-
-export function Register() {
-  return <h2 style={{ padding: '2rem' }}>Register Page</h2>;
-}
 
 export function Updates() {
   return <h2 style={{ padding: '2rem' }}>Latest Updates</h2>;
@@ -106,3 +98,5 @@ export function Map() {
 export function Contact() {
   return <ContactPage/>;
 }
+//export { Navbar, Home, Updates, Map, Contact };
+
