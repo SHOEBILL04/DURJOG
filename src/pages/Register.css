@@ -21,19 +21,19 @@
   align-items: center;
   padding: 4rem 3rem;
   background-color: #ffffff;
-  border-radius: 10px; 
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); 
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .register-logo {
-  height: 150px; 
+  height: 150px;
   width: auto;
   object-fit: contain;
-  margin-bottom: 2.5rem; 
+  margin-bottom: 2.5rem;
 }
 
 .register-form h1 {
-  font-size: 3.2rem; 
+  font-size: 3.2rem;
   margin-bottom: 1.5rem;
   color: black;
   text-align: center;
@@ -46,28 +46,28 @@
 .register-form p {
   font-size: 1.3rem;
   line-height: 1.7;
-  margin-bottom: 2.5rem; 
+  margin-bottom: 2.5rem;
   color: black;
   text-align: center;
 }
 
 .register-form .error {
   color: #dc3545;
-  font-size: 1.2rem; 
-  margin-bottom: 1.5rem; 
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .register-form form {
   display: flex;
   flex-direction: column;
-  gap: 2rem; 
+  gap: 2rem;
   width: 100%;
-  max-width: 500px; 
+  max-width: 500px;
 }
 
 .register-form label {
-  font-size: 1.1rem; 
+  font-size: 1.1rem;
   font-weight: 500;
   color: black;
   text-align: left;
@@ -75,9 +75,9 @@
 
 .register-form input {
   width: 100%;
-  padding: 1rem; 
-  border: 2px solid #ccc; 
-  border-radius: 8px; 
+  padding: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
   font-size: 1.1rem;
   color: black;
 }
@@ -85,7 +85,7 @@
 .register-form input:focus {
   outline: none;
   border-color: #0f612a;
-  box-shadow: 0 0 8px rgba(15, 97, 42, 0.4); 
+  box-shadow: 0 0 8px rgba(15, 97, 42, 0.4);
 }
 
 .register-form input::placeholder {
@@ -93,12 +93,13 @@
 }
 
 .register-form .btn {
-  font-size: 1.2rem; 
-  padding: 1rem 2rem; 
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, transform 0.1s ease;
+  white-space: nowrap;
 }
 
 .register-form .btn.primary {
@@ -109,7 +110,7 @@
 .register-form .btn:hover {
   background-color: #add8e6;
   color: black;
-  transform: translateY(-2px); 
+  transform: translateY(-2px);
 }
 
 .register-form .btn:active {
@@ -117,7 +118,7 @@
 }
 
 .register-form .link {
-  font-size: 1.1rem; 
+  font-size: 1.1rem;
   color: #0f612a;
   text-decoration: none;
   margin-top: 2rem;
@@ -127,7 +128,6 @@
   text-decoration: underline;
   color: #add8e6;
 }
-
 
 @media (max-width: 768px) {
   .register-container {
@@ -189,5 +189,10 @@
 
   .register-form p {
     font-size: 1rem;
+  }
+
+  .register-form .btn {
+    width: 100%;
+    max-width: 200px;
   }
 }
