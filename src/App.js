@@ -4,6 +4,7 @@ import { AuthProvider } from './pages/AuthContext';
 import { Navbar, Home, Updates, Map, Contact } from './pages/Home';
 import Register from './pages/Register';
 import SignIn from './pages/SignIn';
+import ReportPage from './pages/ReportPage';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/register" element={<Register />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/report" element={<ReportPage />} />
           </Routes>
         </div>
       </Router>

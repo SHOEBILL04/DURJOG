@@ -3,21 +3,27 @@
 .navbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem 2rem;
   background: white !important;
   color: black !important;
-  box-shadow: 0 0 5px #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: padding 0.3s ease;
 }
 
 .logo {
-  font-size: 24px;
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
   font-weight: bold;
   color: #007bff;
+  white-space: nowrap;
 }
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: clamp(0.5rem, 2vw, 1rem);
   list-style: none;
   align-items: center;
   margin: 0;
@@ -29,17 +35,17 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 16px;
-  min-width: 100px;
+  padding: 0.5rem 1rem;
+  min-width: 90px;
   background-color: #e0f0ff;
   color: #007bff !important;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   border-radius: 6px;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
   user-select: none;
   box-sizing: border-box;
   white-space: nowrap;
@@ -48,6 +54,7 @@
 .nav-item:hover {
   background-color: #a3cdfd;
   color: #004ea1 !important;
+  transform: translateY(-2px);
 }
 
 .nav-item.active,
@@ -63,36 +70,66 @@
 
 .nav-item.primary:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Hamburger menu for mobile */
+.nav-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0.5rem;
 }
 
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-toggle {
+    display: block;
   }
 
   .nav-links {
+    display: none;
     width: 100%;
-    justify-content: center;
+    flex-direction: column;
     gap: 0.5rem;
+    padding-top: 1rem;
+  }
+
+  .nav-links.active {
+    display: flex;
   }
 
   .nav-item {
-    min-width: 80px;
-    padding: 6px 12px;
-    font-size: 0.9rem;
+    width: 100%;
+    max-width: 250px;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    text-align: center;
   }
 }
 
 @media (max-width: 480px) {
-  .nav-links {
-    flex-direction: column;
-    width: 100%;
+  .navbar {
+    padding: 0.75rem;
+  }
+
+  .logo {
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
   }
 
   .nav-item {
-    width: 100%;
-    max-width: 200px;
+    max-width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .nav-toggle {
+    font-size: 1.3rem;
   }
 }
