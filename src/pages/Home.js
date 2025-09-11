@@ -55,13 +55,15 @@ export function Navbar() {
     <nav className="navbar">
       <div className="logo">
         <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>
-          <img src={logo} alt="Durjog" className="logo-img" />
+          <span className="logo-text">Durjog</span>
         </NavLink>
       </div>
       
       {/* Hamburger menu button for mobile */}
       <button className="hamburger" onClick={toggleMobileMenu}>
-        ☰
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
       
       <ul className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`} ref={mobileMenuRef}>
@@ -122,38 +124,149 @@ export function Navbar() {
   );
 }
 
-// Rest of your components remain the same...
 export function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="hero">
-      <div className="hero-text">
-        <h1>
-          Together, We're Stronger <br />
-          <span>Durjog</span>
-        </h1>
-        <p className="text1">
-          Durjog is built on the power of community and collaboration. In times of need,
-          our platform allows you to quickly report emergencies, receive critical updates,
-          and access lifesaving information.
-        </p>
-        <div className="buttons">
-          <button className="btn primary" onClick={() => navigate('/updates')}>
-            Latest Updates
-          </button>
-          <button className="btn" onClick={() => navigate('/map')}>
-            Disaster Map
-          </button>
-          <button className="btn emergency" onClick={() => navigate('/report')}>
-            Report Emergency {/* Add this button */}
-          </button>
+    <div className="home-container">
+      <div className="hero">
+        <div className="hero-content">
+          <div className="hero-text">
+            <h1>
+              Together, We're <span className="accent-text">Stronger</span>
+            </h1>
+            <p className="hero-description">
+              Durjog is built on the power of community and collaboration. In times of need,
+              our platform allows you to quickly report emergencies, receive critical updates,
+              and access lifesaving information.
+            </p>
+            <div className="hero-buttons">
+              <button className="btn primary" onClick={() => navigate('/updates')}>
+                Latest Updates
+              </button>
+              <button className="btn secondary" onClick={() => navigate('/map')}>
+                Disaster Map
+              </button>
+              <button className="btn emergency" onClick={() => navigate('/report')}>
+                Report Emergency
+              </button>
+            </div>
+          </div>
+          <div className="hero-image">
+            <img src={background} alt="Community helping each other" />
+          </div>
         </div>
       </div>
-      <div className="hero-image">
-        <img src={background} alt="Background" />
-      </div>
+
+      {/* Features Section */}
+      <section className="features-section">
+        <div className="container">
+          <h2>How Durjog Helps Communities</h2>
+          <div className="features-grid">
+            <div className="feature-card">
+              <div className="feature-icon">📢</div>
+              <h3>Real-time Alerts</h3>
+              <p>Receive immediate notifications about emergencies in your area.</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">🗺️</div>
+              <h3>Interactive Map</h3>
+              <p>Visualize disaster areas and resources with our live map.</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">👥</div>
+              <h3>Community Support</h3>
+              <p>Connect with others to provide and receive assistance during crises.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="stats-section">
+        <div className="container">
+          <div className="stats-grid">
+            <div className="stat">
+              <h3>10,000+</h3>
+              <p>Lives Impacted</p>
+            </div>
+            <div className="stat">
+              <h3>500+</h3>
+              <p>Emergency Reports</p>
+            </div>
+            <div className="stat">
+              <h3>50+</h3>
+              <p>Communities Served</p>
+            </div>
+            <div className="stat">
+              <h3>24/7</h3>
+              <p>Active Monitoring</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
+  );
+}
+
+export function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-content">
+        <div className="footer-section">
+          <div className="footer-logo">
+            <img src={logo} alt="Durjog" className="logo-img" />
+            <h3>Durjog</h3>
+          </div>
+          <p>Building resilient communities through technology and collaboration.</p>
+          <div className="social-links">
+            <a href="#" aria-label="Facebook"><span>📱</span></a>
+            <a href="#" aria-label="Twitter"><span>🐦</span></a>
+            <a href="#" aria-label="Instagram"><span>📸</span></a>
+          </div>
+        </div>
+        
+        <div className="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><NavLink to="/">Home</NavLink></li>
+            <li><NavLink to="/updates">News</NavLink></li>
+            <li><NavLink to="/map">Map</NavLink></li>
+            <li><NavLink to="/report">Report Emergency</NavLink></li>
+          </ul>
+        </div>
+        
+        <div className="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Emergency Guidelines</a></li>
+            <li><a href="#">Preparedness Tips</a></li>
+            <li><a href="#">Community Resources</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        
+        <div className="footer-section">
+          <h4>Contact Us</h4>
+          <ul className="contact-info">
+            <li>📧 info@durjog.org</li>
+            <li>📞 +1 (555) 123-4567</li>
+            <li>📍 123 Safety Avenue, Secure City</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div className="footer-bottom">
+        <div className="container">
+          <p>&copy; {new Date().getFullYear()} Durjog. All rights reserved.</p>
+          <div className="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
 
