@@ -1,6 +1,3 @@
-/* Home.css - Updated Styles */
-
-/* Modern navbar styles */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -263,14 +260,14 @@
 .footer {
   background-color: #0f172a;
   color: white;
-  padding: 3rem 0 0;
+  padding: 1rem 0 0;
 }
 
 .footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 100px;
   margin: 0 auto;
   padding: 0 2rem 3rem;
 }

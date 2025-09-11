@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// models/Emergency.js
+import mongoose from 'mongoose';
 
 const emergencySchema = new mongoose.Schema({
   type: {
@@ -26,9 +27,8 @@ const emergencySchema = new mongoose.Schema({
     default: 'medium'
   },
   reportedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    type: String,
+    default: 'anonymous'
   },
   status: {
     type: String,
@@ -44,4 +44,4 @@ const emergencySchema = new mongoose.Schema({
   timestamps: true
 });
 
-module.exports = mongoose.model('Emergency', emergencySchema);
+export default mongoose.model('Emergency', emergencySchema);

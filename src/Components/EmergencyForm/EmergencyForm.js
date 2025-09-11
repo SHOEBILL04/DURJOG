@@ -1,62 +1,49 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../pages/AuthContext'; // Import useAuth instead of AuthContext
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../pages/AuthContext';
 import './EmergencyForm.css';
 
-const EmergencyForm = ({ onReportSubmit }) => {
-  const { isLoggedIn, username } = useAuth(); // Use useAuth hook directly
-  const [formData, setFormData] = useState({
-    type: '',
-    description: '',
-    severity: 'medium',
-    location: {
-      lat: '',
-      lng: ''
-    },
-    contactInfo: {
-      name: username || '',
-      phone: '',
-      email: ''
-    }
-  });
+const EmergencyForm = ({ onReportSubmit, isSubmitting, isSuccess }) => {
+  const { isLoggedIn, username } = useAuth();
+  const [emergencyType, setEmergencyType] = useState('');
+  const [description, setDescription] = useState('');
+  const [urgency, setUrgency] = useState('medium');
+  const [locationError, setLocationError] = useState('');
+  const [locationMethod, setLocationMethod] = useState('auto');
+  const [manualLatitude, setManualLatitude] = useState('');
+  const [manualLongitude, setManualLongitude] = useState('');
+  const [locationAccess, setLocationAccess] = useState(null); // null, 'granted', 'denied', 'unsupported'
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setFormData(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent],
-          [child]: value
-        }
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
+  // Check if geolocation is supported
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setLocationAccess('unsupported');
+      setLocationMethod('manual');
     }
-  };
+  }, []);
 
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setFormData(prev => ({
-            ...prev,
-            location: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            }
-          }));
-        },
-        (error) => {
-          alert('Error getting location: ' + error.message);
-        }
-      );
-    } else {
-      alert('Geolocation is not supported by this browser.');
+  const requestLocationPermission = async () => {
+    if (!navigator.geolocation) {
+      setLocationAccess('unsupported');
+      setLocationMethod('manual');
+      return false;
+    }
+
+    try {
+      // Test geolocation permission
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          resolve,
+          reject,
+          { timeout: 5000 }
+        );
+      });
+      
+      setLocationAccess('granted');
+      return true;
+    } catch (error) {
+      setLocationAccess('denied');
+      setLocationError('Location access denied. Please use manual coordinates or enable location permissions in your browser settings.');
+      return false;
     }
   };
 
@@ -64,160 +51,257 @@ const EmergencyForm = ({ onReportSubmit }) => {
     e.preventDefault();
     
     if (!isLoggedIn) {
-      alert('Please log in to report an emergency');
+      alert('Please log in to submit an emergency report');
       return;
     }
     
+    setLocationError('');
+    
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/emergencies', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
+      let locationData;
       
-      const data = await response.json();
-      
-      if (response.ok) {
-        alert('Emergency reported successfully!');
-        if (onReportSubmit) onReportSubmit(data.emergency);
-        setFormData({
-          type: '',
-          description: '',
-          severity: 'medium',
-          location: {
-            lat: '',
-            lng: ''
-          },
-          contactInfo: {
-            name: username || '',
-            phone: '',
-            email: ''
+      if (locationMethod === 'auto') {
+        // Request location permission if not already granted
+        if (locationAccess !== 'granted') {
+          const hasPermission = await requestLocationPermission();
+          if (!hasPermission) {
+            return; // Stop submission if permission denied
           }
-        });
+        }
+        
+        // Get user's current location automatically
+        const position = await getCurrentLocation();
+        locationData = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
       } else {
-        alert('Error: ' + data.message);
+        // Use manually entered location
+        if (!manualLatitude || !manualLongitude) {
+          throw new Error('Please enter both latitude and longitude coordinates');
+        }
+        
+        const lat = parseFloat(manualLatitude);
+        const lng = parseFloat(manualLongitude);
+        
+        if (isNaN(lat) || isNaN(lng)) {
+          throw new Error('Please enter valid numeric coordinates');
+        }
+        
+        if (lat < -90 || lat > 90) {
+          throw new Error('Latitude must be between -90 and 90');
+        }
+        
+        if (lng < -180 || lng > 180) {
+          throw new Error('Longitude must be between -180 and 180');
+        }
+        
+        locationData = {
+          latitude: lat,
+          longitude: lng
+        };
+      }
+      
+      const reportData = {
+        type: emergencyType,
+        description,
+        urgency,
+        location: locationData
+      };
+      
+      if (onReportSubmit) {
+        await onReportSubmit(reportData);
+        
+        // Reset form on success
+        if (isSuccess) {
+          setEmergencyType('');
+          setDescription('');
+          setUrgency('medium');
+          setManualLatitude('');
+          setManualLongitude('');
+        }
       }
     } catch (error) {
-      alert('Error submitting form: ' + error.message);
+      console.error('Error submitting emergency report:', error);
+      if (error.message.includes('geolocation')) {
+        setLocationError('Unable to get your location. Please enable location services or use manual entry.');
+      } else {
+        alert(`Error submitting report: ${error.message}`);
+      }
+    }
+  };
+
+  const getCurrentLocation = () => {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error('Geolocation is not supported by this browser.'));
+      } else {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 10000,
+          enableHighAccuracy: true
+        });
+      }
+    });
+  };
+
+  const handleAutoLocationSelect = async () => {
+    setLocationMethod('auto');
+    setLocationError('');
+    
+    if (locationAccess === 'denied') {
+      setLocationError('Location access was previously denied. Please enable location permissions in your browser settings or use manual coordinates.');
+    } else if (locationAccess === 'unsupported') {
+      setLocationError('Geolocation is not supported by your browser. Please use manual coordinates.');
+      setLocationMethod('manual');
     }
   };
 
   return (
     <div className="emergency-form-container">
-      <h2>Report Emergency</h2>
-      {!isLoggedIn && (
-        <div className="login-warning">
-          Please log in to report an emergency
+      <h2>Report Emergency Situation</h2>
+      <p className="form-subtitle">Please provide details about the emergency. Your report will be visible to authorities and other users.</p>
+      
+      {locationError && (
+        <div className="error-message">
+          <span>⚠️</span> {locationError}
         </div>
       )}
-      <form onSubmit={handleSubmit} className="emergency-form">
+      
+      {locationMethod === 'auto' && locationAccess !== 'granted' && (
+        <div className="location-permission-note">
+          <p>📍 <strong>Location Access Required</strong></p>
+          <p>This application needs access to your location to accurately report emergencies. Please allow location access when prompted.</p>
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Emergency Type:</label>
-          <select name="type" value={formData.type} onChange={handleChange} required disabled={!isLoggedIn}>
-            <option value="">Select Type</option>
+          <label htmlFor="emergencyType">Emergency Type *</label>
+          <select
+            id="emergencyType"
+            value={emergencyType}
+            onChange={(e) => setEmergencyType(e.target.value)}
+            required
+            className="form-select"
+          >
+            <option value="">Select emergency type</option>
             <option value="flood">Flood</option>
             <option value="earthquake">Earthquake</option>
-            <option value="blood">Blood Needed</option>
             <option value="fire">Fire</option>
             <option value="medical">Medical Emergency</option>
+            <option value="blood">Need Blood</option>
             <option value="other">Other</option>
           </select>
         </div>
-
+        
         <div className="form-group">
-          <label>Description:</label>
-          <textarea 
-            name="description" 
-            value={formData.description} 
-            onChange={handleChange} 
-            required 
+          <label htmlFor="description">Description *</label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Please provide details about the emergency (what you see, number of people affected, immediate dangers)..."
             rows="4"
-            placeholder="Please provide details about the emergency"
-            disabled={!isLoggedIn}
+            required
+            className="form-textarea"
           />
         </div>
-
+        
         <div className="form-group">
-          <label>Severity:</label>
-          <select name="severity" value={formData.severity} onChange={handleChange} disabled={!isLoggedIn}>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-            <option value="critical">Critical</option>
+          <label htmlFor="urgency">Urgency Level *</label>
+          <select
+            id="urgency"
+            value={urgency}
+            onChange={(e) => setUrgency(e.target.value)}
+            required
+            className="form-select"
+          >
+            <option value="low">Low - Monitoring situation</option>
+            <option value="medium">Medium - Assistance needed</option>
+            <option value="high">High - Immediate danger</option>
+            <option value="critical">Critical - Life-threatening</option>
           </select>
         </div>
-
+        
         <div className="form-group">
-          <label>Location:</label>
-          <div className="location-inputs">
-            <input
-              type="number"
-              step="any"
-              name="location.lat"
-              placeholder="Latitude"
-              value={formData.location.lat}
-              onChange={handleChange}
-              required
-              disabled={!isLoggedIn}
-            />
-            <input
-              type="number"
-              step="any"
-              name="location.lng"
-              placeholder="Longitude"
-              value={formData.location.lng}
-              onChange={handleChange}
-              required
-              disabled={!isLoggedIn}
-            />
-            <button type="button" onClick={getCurrentLocation} className="location-btn" disabled={!isLoggedIn}>
-              Use Current Location
-            </button>
+          <label>Location Method *</label>
+          <div className="location-method">
+            <label className="radio-label">
+              <input
+                type="radio"
+                value="auto"
+                checked={locationMethod === 'auto'}
+                onChange={handleAutoLocationSelect}
+              />
+              Use my current location (Recommended for accuracy)
+            </label>
+            <label className="radio-label">
+              <input
+                type="radio"
+                value="manual"
+                checked={locationMethod === 'manual'}
+                onChange={() => setLocationMethod('manual')}
+              />
+              Enter coordinates manually
+            </label>
           </div>
         </div>
-
-        <div className="form-group">
-          <label>Your Name:</label>
-          <input
-            type="text"
-            name="contactInfo.name"
-            value={formData.contactInfo.name}
-            onChange={handleChange}
-            required
-            disabled={!isLoggedIn}
-          />
+        
+        {locationMethod === 'manual' && (
+          <div className="form-group manual-location">
+            <div className="coordinates-input">
+              <div>
+                <label htmlFor="latitude">Latitude *</label>
+                <input
+                  type="text"
+                  id="latitude"
+                  value={manualLatitude}
+                  onChange={(e) => setManualLatitude(e.target.value)}
+                  placeholder="e.g., 23.8103"
+                  required={locationMethod === 'manual'}
+                />
+              </div>
+              <div>
+                <label htmlFor="longitude">Longitude *</label>
+                <input
+                  type="text"
+                  id="longitude"
+                  value={manualLongitude}
+                  onChange={(e) => setManualLongitude(e.target.value)}
+                  placeholder="e.g., 90.4125"
+                  required={locationMethod === 'manual'}
+                />
+              </div>
+            </div>
+            <p className="location-help">
+              💡 You can find coordinates using Google Maps: Right-click on a location and select "What's here?"
+            </p>
+          </div>
+        )}
+        
+        <div className="form-footer">
+          <p className="location-note">
+            {locationMethod === 'auto' 
+              ? '📍 Your current location will be automatically included with this report'
+              : '📍 The coordinates you provide will be used for this report'
+            }
+          </p>
+          
+          <button 
+            type="submit" 
+            disabled={isSubmitting || !emergencyType || !description}
+            className={`submit-btn ${isSubmitting ? 'submitting' : ''}`}
+          >
+            {isSubmitting ? (
+              <>
+                <span className="spinner"></span>
+                Submitting...
+              </>
+            ) : (
+              'Submit Emergency Report'
+            )}
+          </button>
         </div>
-
-        <div className="form-group">
-          <label>Your Phone:</label>
-          <input
-            type="tel"
-            name="contactInfo.phone"
-            value={formData.contactInfo.phone}
-            onChange={handleChange}
-            required
-            disabled={!isLoggedIn}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Your Email:</label>
-          <input
-            type="email"
-            name="contactInfo.email"
-            value={formData.contactInfo.email}
-            onChange={handleChange}
-            disabled={!isLoggedIn}
-          />
-        </div>
-
-        <button type="submit" className="submit-btn" disabled={!isLoggedIn}>
-          Report Emergency
-        </button>
       </form>
     </div>
   );
