@@ -11,7 +11,7 @@ export default function Contact() {
     const formData = new FormData(event.target);
 
     try {
-      const {data} = await axios.post("http://localhost:5000/api/contact", {
+      const {data} = await axios.post("http://localhost:5001/api/contact", {
           name: formData.get("name"),
           email: formData.get("email"),
           message: formData.get("message"),
