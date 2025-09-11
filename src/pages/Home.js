@@ -11,12 +11,22 @@ export function Navbar() {
   const navigate = useNavigate();
   const { isLoggedIn, username, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Close dropdown if clicked outside
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
+      }
+      
+      // Close mobile menu if clicked outside
+      if (mobileMenuRef.current && 
+          !mobileMenuRef.current.contains(event.target) &&
+          !event.target.classList.contains('hamburger')) {
+        setIsMobileMenuOpen(false);
       }
     };
 
@@ -29,6 +39,7 @@ export function Navbar() {
   const handleLogout = () => {
     logout();
     setShowDropdown(false);
+    setIsMobileMenuOpen(false);
     navigate('/signin');
   };
 
@@ -36,31 +47,46 @@ export function Navbar() {
     setShowDropdown(!showDropdown);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <nav className="navbar">
       <div className="logo">
-        <NavLink to="/">
+        <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>
           <img src={logo} alt="Durjog" className="logo-img" />
         </NavLink>
       </div>
-      <ul className="nav-links">
+      
+      {/* Hamburger menu button for mobile */}
+      <button className="hamburger" onClick={toggleMobileMenu}>
+        ☰
+      </button>
+      
+      <ul className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`} ref={mobileMenuRef}>
         <li>
-          <NavLink to="/" className="nav-item" end>
+          <NavLink to="/" className="nav-item" end onClick={() => setIsMobileMenuOpen(false)}>
             Home
           </NavLink>
         </li>
         <li>
-          <NavLink to="/updates" className="nav-item">
+          <NavLink to="/updates" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}>
             News
           </NavLink>
         </li>
         <li>
-          <NavLink to="/map" className="nav-item">
+          <NavLink to="/map" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}>
             Map
           </NavLink>
         </li>
         <li>
-          <NavLink to="/contact" className="nav-item">
+          <NavLink to="/report" className="nav-item emergency-btn" onClick={() => setIsMobileMenuOpen(false)}>
+            Report
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/contact" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}>
             Contact
           </NavLink>
         </li>
@@ -80,12 +106,12 @@ export function Navbar() {
         ) : (
           <>
             <li>
-              <NavLink to="/signin" className="nav-item">
+              <NavLink to="/signin" className="nav-item" onClick={() => setIsMobileMenuOpen(false)}>
                 Sign In
               </NavLink>
             </li>
             <li>
-              <NavLink to="/register" className="nav-item register-btn">
+              <NavLink to="/register" className="nav-item register-btn" onClick={() => setIsMobileMenuOpen(false)}>
                 Register
               </NavLink>
             </li>
@@ -96,7 +122,7 @@ export function Navbar() {
   );
 }
 
-// Rest of your components (Home, Updates, Map, Contact) remain the same...
+// Rest of your components remain the same...
 export function Home() {
   const navigate = useNavigate();
 
@@ -118,6 +144,9 @@ export function Home() {
           </button>
           <button className="btn" onClick={() => navigate('/map')}>
             Disaster Map
+          </button>
+          <button className="btn emergency" onClick={() => navigate('/report')}>
+            Report Emergency {/* Add this button */}
           </button>
         </div>
       </div>
