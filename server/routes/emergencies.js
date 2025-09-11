@@ -1,7 +1,8 @@
-const express = require('express');
+// routes/emergencies.js
+import express from 'express';
+import Emergency from '../models/Emergency.js';
+
 const router = express.Router();
-const Emergency = require('../models/Emergency');
-const auth = require('../middleware/auth');
 
 // Get all emergencies
 router.get('/', async (req, res) => {
@@ -16,33 +17,31 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Create a new emergency report
-router.post('/', auth, async (req, res) => {
+// Create a new emergency report (without auth for now)
+router.post('/', async (req, res) => {
   try {
     const emergency = new Emergency({
       ...req.body,
-      reportedBy: req.user.id
+      reportedBy: 'anonymous-user' // Temporary for testing
     });
     
     const savedEmergency = await emergency.save();
-    res.status(201).json({ emergency: savedEmergency });
+    res.status(201).json({ 
+      message: 'Emergency reported successfully!',
+      emergency: savedEmergency 
+    });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-// Update an emergency report
-router.patch('/:id', auth, async (req, res) => {
+// Update an emergency report (without auth for now)
+router.patch('/:id', async (req, res) => {
   try {
     const emergency = await Emergency.findById(req.params.id);
     
     if (!emergency) {
       return res.status(404).json({ message: 'Emergency not found' });
-    }
-    
-    // Check if user is the reporter or admin
-    if (emergency.reportedBy.toString() !== req.user.id && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Not authorized' });
     }
     
     Object.keys(req.body).forEach(key => {
@@ -56,18 +55,13 @@ router.patch('/:id', auth, async (req, res) => {
   }
 });
 
-// Delete an emergency report
-router.delete('/:id', auth, async (req, res) => {
+// Delete an emergency report (without auth for now)
+router.delete('/:id', async (req, res) => {
   try {
     const emergency = await Emergency.findById(req.params.id);
     
     if (!emergency) {
       return res.status(404).json({ message: 'Emergency not found' });
-    }
-    
-    // Check if user is the reporter or admin
-    if (emergency.reportedBy.toString() !== req.user.id && !req.user.isAdmin) {
-      return res.status(403).json({ message: 'Not authorized' });
     }
     
     await Emergency.findByIdAndDelete(req.params.id);
@@ -77,4 +71,9 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+// Add a test endpoint
+router.get('/test', (req, res) => {
+  res.json({ message: 'Emergencies API is working!', timestamp: new Date().toISOString() });
+});
+
+export default router;
