@@ -1,33 +1,71 @@
+/* Full page background stays the same */
+.register-page {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background: url('https://images.pexels.com/photos/47863/firefighter-extinguish-fire-extinction-47863.jpeg') 
+              no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dark overlay for contrast */
+.register-page .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+/* Transparent / frosted form */
 .register-container {
+  position: relative;
+  z-index: 1;
   max-width: 400px;
-  margin: 2rem auto;
+  width: 100%;
   padding: 2rem;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.2);   /* semi-transparent */
+  backdrop-filter: blur(10px);            /* frosted glass effect */
+  border-radius: 12px;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+  color: #fff;                            /* make text white */
 }
 
 .register-container h2 {
   margin-bottom: 1.5rem;
   text-align: center;
+  color: #fff;  /* clear white title */
 }
 
-.register-form .form-group {
-  margin-bottom: 1rem;
-}
-
+/* Labels and text */
 .register-form label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #fff;  /* clear white */
 }
 
+/* Input fields */
 .register-form input {
   width: 100%;
   padding: 0.6rem;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 5px;
+  background: rgba(255, 255, 255, 0.85);  /* light transparent */
+  color: #000;                            /* black text inside */
+  outline: none;
 }
 
+.register-form input:focus {
+  border-color: #007BFF;
+  background: rgba(255, 255, 255, 1);     /* solid on focus */
+}
+
+/* Button */
 .register-button {
   width: 100%;
   padding: 0.8rem;
@@ -36,25 +74,30 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background 0.3s ease;
 }
 
 .register-button:hover {
   background: #0056b3;
 }
 
+/* Status messages */
 .status-message {
   padding: 0.8rem;
   margin-bottom: 1rem;
   border-radius: 5px;
   text-align: center;
+  font-weight: bold;
 }
 
 .status-message.success {
-  background-color: #d4edda;
+  background-color: rgba(212, 237, 218, 0.8);
   color: #155724;
 }
 
 .status-message.error {
-  background-color: #f8d7da;
+  background-color: rgba(248, 215, 218, 0.8);
   color: #721c24;
 }
