@@ -1,3 +1,4 @@
+// SignIn.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
@@ -14,16 +15,21 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
     try {
       const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await response.json();
+
       if (response.ok) {
+        // Save user profile to localStorage for demo/testing purpose
+        localStorage.setItem('userProfile', JSON.stringify(data.user));
         login(data.token, data.user.username);
-        navigate('/');
+        navigate('/profile');
       } else {
         setError(data.message || 'Login failed');
       }
@@ -32,13 +38,30 @@ function SignIn() {
     }
   };
 
+  const handleGuestLogin = () => {
+    const guestProfile = {
+      fullName: 'Guest User',
+      username: 'guest123',
+      email: 'guest@durjog.org',
+      phone: 'N/A',
+      location: 'Unknown',
+      picture: '', // Optional: add default guest image
+    };
+
+    localStorage.setItem('userProfile', JSON.stringify(guestProfile));
+    login('guest-token', guestProfile.username); // Fake token
+    navigate('/profile');
+  };
+
   return (
     <div className="signin-container">
       <div className="signin-form">
         <img src={logo} alt="Durjog" className="signin-logo" />
         <h1>Sign In to <span>Durjog</span></h1>
         <p>Welcome back! Please sign in to your account.</p>
+
         {error && <p className="error">{error}</p>}
+
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email">Email</label>
@@ -66,7 +89,12 @@ function SignIn() {
             Sign In
           </button>
         </form>
-        <p>
+
+        <button onClick={handleGuestLogin} className="btn secondary" style={{ marginTop: '1rem' }}>
+          Sign in as Guest
+        </button>
+
+        <p style={{ marginTop: '1rem' }}>
           Don't have an account?{' '}
           <a href="/register" className="link">
             Register here
