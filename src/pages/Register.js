@@ -1,103 +1,159 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Register.css';
-import logo from '../assets/icon.png';
 
-function Register() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+import './Register.css';
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    fullName: '',
+    phone: '',
+    location: '',
+    picture: '',
+  });
+
+  const [status, setStatus] = useState({
+    success: null,
+    message: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ 
+      ...formData, 
+      [e.target.name]: e.target.value 
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+
+    if (formData.password !== formData.confirmPassword) {
+      setStatus({ success: false, message: 'Passwords do not match.' });
       return;
     }
+
     try {
-     const response = await fetch('/api/auth/register', {  // <-- relative path here
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ username, email, password }),
-});
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
+
       if (response.ok) {
-        navigate('/signin');
+        setStatus({ success: true, message: 'Registration successful! You can now sign in.' });
       } else {
-        setError(data.message || 'Registration failed');
+        setStatus({ success: false, message: data.message || 'Registration failed.' });
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setStatus({ success: false, message: 'An error occurred during registration.' });
     }
   };
 
   return (
-    <div className="register-container">
-      <div className="register-form">
-        <img src={logo} alt="Durjog" className="register-logo" />
-        <h1>Register for <span>Durjog</span></h1>
-        <p>Create an account to join the community and contribute.</p>
-        {error && <p className="error">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
-              required
+
+    <div className="register-page">
+      <div className="overlay"></div>
+      <div className="register-container">
+        <h2>Create an Account</h2>
+
+        {status.message && (
+          <div className={`status-message ${status.success ? 'success' : 'error'}`}>
+            {status.message}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="register-form">
+          <div className="form-group">
+            <label>Username</label>
+            <input 
+              type="text" 
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required 
             />
           </div>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
+
+          <div className="form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required 
             />
           </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
+
+          <div className="form-group">
+            <label>Password</label>
+            <input 
+              type="password" 
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required 
             />
           </div>
-          <div>
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm your password"
-              required
+
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input 
+              type="password" 
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required 
             />
           </div>
-          <button type="submit" className="btn primary">
-            Register
-          </button>
+
+          <div className="form-group">
+            <label>Full Name</label>
+            <input 
+              type="text" 
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              required 
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Phone Number</label>
+            <input 
+              type="text" 
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Location</label>
+            <input 
+              type="text" 
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Profile Picture URL</label>
+            <input 
+              type="text" 
+              name="picture"
+              value={formData.picture}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button type="submit" className="register-button">Register</button>
         </form>
-        <p>
-          Already have an account?{' '}
-          <a href="/signin" className="link">
-            Sign in here
-          </a>
-        </p>
       </div>
     </div>
   );

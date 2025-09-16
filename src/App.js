@@ -7,6 +7,7 @@ import SignIn from './pages/SignIn';
 import Profile from './pages/Profile'; 
 import ReportPage from './pages/ReportPage';
 import MapPage from './pages/MapPage'; // Import the new MapPage component
+import Profile from './pages/Profile'; 
 import 'leaflet/dist/leaflet.css';
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/report" element={<ReportPage />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
       </Router>
