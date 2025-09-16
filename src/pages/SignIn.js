@@ -1,3 +1,4 @@
+// SignIn.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
@@ -12,24 +13,48 @@ function SignIn() {
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        login(data.token, data.user.username);
-        navigate('/');
-      } else {
-        setError(data.message || 'Login failed');
-      }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+  e.preventDefault();
+  setError('');
+
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // 👉 MAKE THIS CHANGE HERE
+      login(data.token, data.user.username);
+      localStorage.setItem('userProfile', JSON.stringify(data.user));
+      navigate('/profile'); // ← replace '/' with '/profile'
+    } else {
+      console.error('Login error:', data.message);
+      setError(data.message || 'Login failed');
     }
+  } catch (err) {
+    console.error('Fetch error:', err);
+    setError('An error occurred. Please try again.');
+  }
+};
+
+  const handleGuestLogin = () => {
+    const guestProfile = {
+      fullName: 'Guest User',
+      username: 'guest',
+      email: 'guest@durjog.org',
+      phone: 'N/A',
+      location: 'Unknown',
+      picture: ''
+    };
+
+    localStorage.setItem('userProfile', JSON.stringify(guestProfile));
+    login('guest-token', 'guest');
+    navigate('/profile');
   };
 
   return (
@@ -62,15 +87,16 @@ function SignIn() {
               required
             />
           </div>
-          <button type="submit" className="btn primary">
-            Sign In
-          </button>
+          <button type="submit" className="btn primary">Sign In</button>
         </form>
+
+        <button onClick={handleGuestLogin} className="btn secondary" style={{ marginTop: '1rem' }}>
+          Sign in as Guest
+        </button>
+
         <p>
           Don't have an account?{' '}
-          <a href="/register" className="link">
-            Register here
-          </a>
+          <a href="/register" className="link">Register here</a>
         </p>
       </div>
     </div>
