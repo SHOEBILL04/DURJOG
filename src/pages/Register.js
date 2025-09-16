@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import './Register.css';
 
 const Register = () => {
@@ -53,6 +54,7 @@ const Register = () => {
   };
 
   return (
+
     <div className="register-page">
       <div className="overlay"></div>
       <div className="register-container">
@@ -155,6 +157,6 @@ const Register = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Register;

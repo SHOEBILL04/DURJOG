@@ -13,6 +13,7 @@ function SignIn() {
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setError('');
 
@@ -36,6 +37,25 @@ function SignIn() {
     } catch (err) {
       setError('An error occurred. Please try again.');
     }
+  } catch (err) {
+    console.error('Fetch error:', err);
+    setError('An error occurred. Please try again.');
+  }
+};
+
+  const handleGuestLogin = () => {
+    const guestProfile = {
+      fullName: 'Guest User',
+      username: 'guest',
+      email: 'guest@durjog.org',
+      phone: 'N/A',
+      location: 'Unknown',
+      picture: ''
+    };
+
+    localStorage.setItem('userProfile', JSON.stringify(guestProfile));
+    login('guest-token', 'guest');
+    navigate('/profile');
   };
 
   const handleGuestLogin = () => {
@@ -85,20 +105,17 @@ function SignIn() {
               required
             />
           </div>
-          <button type="submit" className="btn primary">
-            Sign In
-          </button>
+          <button type="submit" className="btn primary">Sign In</button>
         </form>
 
         <button onClick={handleGuestLogin} className="btn secondary" style={{ marginTop: '1rem' }}>
           Sign in as Guest
         </button>
 
+
         <p style={{ marginTop: '1rem' }}>
           Don't have an account?{' '}
-          <a href="/register" className="link">
-            Register here
-          </a>
+          <a href="/register" className="link">Register here</a>
         </p>
       </div>
     </div>

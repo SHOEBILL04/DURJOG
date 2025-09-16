@@ -4,6 +4,7 @@ import { AuthProvider } from './pages/AuthContext';
 import { Navbar, Home, Updates, Contact } from './pages/Home'; // Remove Map from here
 import Register from './pages/Register';
 import SignIn from './pages/SignIn';
+import Profile from './pages/Profile'; 
 import ReportPage from './pages/ReportPage';
 import MapPage from './pages/MapPage'; // Import the new MapPage component
 import Profile from './pages/Profile'; 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/register" element={<Register />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/report" element={<ReportPage />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
