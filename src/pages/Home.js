@@ -97,13 +97,22 @@ export function Navbar() {
             <button className="nav-item profile-btn" onClick={toggleDropdown}>
               {username} ▼
             </button>
-            {showDropdown && (
-              <div className="dropdown-menu">
-                <button onClick={handleLogout} className="dropdown-item">
-                  Logout
-                </button>
-              </div>
-            )}
+{showDropdown && (
+  <div className="dropdown-menu">
+    <button 
+      onClick={() => {
+        navigate('/profile');
+        setShowDropdown(false);
+      }} 
+      className="dropdown-item"
+    >
+      Profile
+    </button>
+    <button onClick={handleLogout} className="dropdown-item">
+      Logout
+    </button>
+  </div>
+)}
           </li>
         ) : (
           <>

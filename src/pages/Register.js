@@ -1,121 +1,105 @@
 import React, { useState } from 'react';
-import EmergencyForm from '../Components/EmergencyForm/EmergencyForm';
-import './ReportPage.css';
+import { useNavigate } from 'react-router-dom';
+import './Register.css';
+import logo from '../assets/icon.png';
 
-const ReportPage = () => {
-  const [submitStatus, setSubmitStatus] = useState({
-    isSubmitting: false,
-    isSuccess: false,
-    isError: false,
-    message: ''
-  });
+function Register() {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  // Replace with your actual API endpoint
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-
-  const submitEmergencyReport = async (emergencyData) => {
-    const token = localStorage.getItem('token'); // Assuming you store JWT token in localStorage
-    
-    const response = await fetch(`${API_BASE_URL}/emergencies`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(emergencyData)
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to submit emergency report');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
     }
-    
-    return response.json();
-  };
-
-  const handleReportSubmit = async (emergency) => {
-    setSubmitStatus({
-      isSubmitting: true,
-      isSuccess: false,
-      isError: false,
-      message: 'Submitting your report...'
-    });
-    
     try {
-      console.log('Submitting emergency report:', emergency);
-      
-      // Call the API function
-      const result = await submitEmergencyReport(emergency);
-      
-      setSubmitStatus({
-        isSubmitting: false,
-        isSuccess: true,
-        isError: false,
-        message: result.message || 'Emergency reported successfully! It will now appear on the map.'
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
       });
-      
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      
-      let errorMessage = error.message || 'Please check your connection and try again.';
-      
-      // Handle specific error cases
-      if (errorMessage.includes('NetworkError') || errorMessage.includes('Failed to fetch')) {
-        errorMessage = 'Cannot connect to server. Please check your internet connection.';
-      } else if (errorMessage.includes('token') || errorMessage.includes('auth')) {
-        errorMessage = 'Please log in to report an emergency.';
+      const data = await response.json();
+      if (response.ok) {
+        navigate('/signin');
+      } else {
+        setError(data.message || 'Registration failed');
       }
-      
-      setSubmitStatus({
-        isSubmitting: false,
-        isSuccess: false,
-        isError: true,
-        message: errorMessage
-      });
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
 
   return (
-    <div className="report-page">
-      <div className="report-container">
-        <h1>Report an Emergency</h1>
-        <p className="page-description">
-          Use this form to report emergencies like floods, earthquakes, medical emergencies, 
-          or requests for blood donations. Your report will be visible on the map to help others.
-        </p>
-        
-        {/* Status Message */}
-        {submitStatus.message && (
-          <div className={`status-message ${submitStatus.isSuccess ? 'success' : ''} ${submitStatus.isError ? 'error' : ''}`}>
-            <div className="message-content">
-              {submitStatus.isSuccess && <div className="icon">✓</div>}
-              {submitStatus.isError && <div className="icon">⚠️</div>}
-              <span>{submitStatus.message}</span>
-            </div>
-            {submitStatus.isError && (
-              <button 
-                className="retry-btn"
-                onClick={() => setSubmitStatus({
-                  isSubmitting: false,
-                  isSuccess: false,
-                  isError: false,
-                  message: ''
-                })}
-              >
-                Try Again
-              </button>
-            )}
+    <div className="register-container">
+      <div className="register-form">
+        <img src={logo} alt="Durjog" className="register-logo" />
+        <h1>Register for <span>Durjog</span></h1>
+        <p>Create an account to join the community and contribute.</p>
+        {error && <p className="error">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+              required
+            />
           </div>
-        )}
-        
-        <EmergencyForm 
-          onReportSubmit={handleReportSubmit} 
-          isSubmitting={submitStatus.isSubmitting}
-          isSuccess={submitStatus.isSuccess}
-        />
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+          <button type="submit" className="btn primary">
+            Register
+          </button>
+        </form>
+        <p>
+          Already have an account?{' '}
+          <a href="/signin" className="link">
+            Sign in here
+          </a>
+        </p>
       </div>
     </div>
   );
-};
+}
 
-export default ReportPage;
+export default Register;
