@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import logo from '../assets/icon.png';
 import MapPage from './MapPage';
+import NewsPage from './NewsPage';
 import { ContactPage } from './ContactPage';
 import background from '../assets/background.jpg';
 import './Home.css';
@@ -272,7 +273,7 @@ export function Footer() {
 }
 
 export function Updates() {
-  return <h2 style={{ padding: '2rem' }}>Latest Updates</h2>;
+  return <NewsPage />;
 }
 
 export function Map() {

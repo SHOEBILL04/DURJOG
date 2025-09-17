@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import connectDB from "./db/connect.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import newsRoutes from "./routes/newsRoutes.js";
 import emergencyRoutes from "./routes/emergencies.js"; // Make sure to import your emergency routes
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/contact", contactRoutes);
+app.use("/api/updates", newsRoutes);
 app.use("/api/emergencies", emergencyRoutes); // Add this line for emergency routes
 
 // Add a test endpoint
