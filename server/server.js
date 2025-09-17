@@ -8,6 +8,7 @@ import newsRoutes from "./routes/newsRoutes.js";
 import emergencyRoutes from "./routes/emergencies.js"; // Make sure to import your emergency routes
 
 dotenv.config();
+connectDB();
 
 const app = express();
 
