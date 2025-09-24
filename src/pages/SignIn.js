@@ -49,7 +49,7 @@ function SignIn() {
       email: 'guest@durjog.org',
       phone: 'N/A',
       location: 'Unknown',
-      picture: '', // Optional: add default guest image
+      picture: '', 
     };
 
     localStorage.setItem('userProfile', JSON.stringify(guestProfile));

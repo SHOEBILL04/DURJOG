@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import logo from '../assets/icon.png';
 import MapPage from './MapPage';
+import NewsPage from './NewsPage';
 import { ContactPage } from './ContactPage';
 import background from '../assets/background.jpg';
 import './Home.css';
@@ -229,9 +230,9 @@ export function Footer() {
           </div>
           <p>Building resilient communities through technology and collaboration.</p>
           <div className="social-links">
-            <a href="#" aria-label="Facebook"><span>📱</span></a>
-            <a href="#" aria-label="Twitter"><span>🐦</span></a>
-            <a href="#" aria-label="Instagram"><span>📸</span></a>
+            <a href="https://facebook.com" aria-label="Facebook"><span>📱</span></a>
+            <a href="https://x.com" aria-label="Twitter"><span>🐦</span></a>
+            <a href="https://instagram.com" aria-label="Instagram"><span>📸</span></a>
           </div>
         </div>
         
@@ -248,10 +249,10 @@ export function Footer() {
         <div className="footer-section">
           <h4>Resources</h4>
           <ul>
-            <li><a href="#">Emergency Guidelines</a></li>
-            <li><a href="#">Preparedness Tips</a></li>
-            <li><a href="#">Community Resources</a></li>
-            <li><a href="#">FAQ</a></li>
+            <li><a href="https://www.police.gov.bd/en/hot_line_number">Emergency Guidelines</a></li>
+            <li><a href="https://www.police.gov.bd/en/hot_line_number">Preparedness Tips</a></li>
+            <li><a href="https://www.police.gov.bd/en/hot_line_number">Community Resources</a></li>
+            <li><a href="https://www.police.gov.bd/en/hot_line_number">FAQ</a></li>
           </ul>
         </div>
         
@@ -269,9 +270,9 @@ export function Footer() {
         <div className="container">
           <p>&copy; {new Date().getFullYear()} Durjog. All rights reserved.</p>
           <div className="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
+            <a href="https://www.police.gov.bd/en/hot_line_number">Privacy Policy</a>
+            <a href="https://www.police.gov.bd/en/hot_line_number">Terms of Service</a>
+            <a href="https://www.police.gov.bd/en/hot_line_number">Cookie Policy</a>
           </div>
         </div>
       </div>
@@ -280,7 +281,7 @@ export function Footer() {
 }
 
 export function Updates() {
-  return <h2 style={{ padding: '2rem' }}>Latest Updates</h2>;
+  return <NewsPage />;
 }
 
 export function Map() {
